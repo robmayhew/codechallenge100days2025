@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist",           // Output directory for compiled JavaScript files
+    "rootDir": "./src",           // Root directory of the source TypeScript files
+    "target": "ES5",              // Target ECMAScript version
+    "module": "esnext",
+    // Module system to use
+    "strict": true,               // Enable all strict type-checking options
+    "esModuleInterop": true,      // Allow default imports from CommonJS modules
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": "./src",
+      "moduleResolution": "node"
+
+  },
+  "include": ["src/**/*"],        // Include all TypeScript files in the src directory
+  "exclude": ["node_modules"]     // Exclude dependencies
+}
