@@ -19,10 +19,10 @@ function gameLoop() {
     clearScreen();
 
     // Ship controls
-    if (keys["ArrowLeft"]) ship.rotate(-0.05);
-    if (keys["ArrowRight"]) ship.rotate(0.05);
-    if (keys["ArrowUp"]) ship.accelerate(0.1);
-    if (keys["ArrowDown"]) ship.accelerate(-0.1);
+    if (keys["a"]) ship.rotate(-0.05);
+    if (keys["d"]) ship.rotate(0.05);
+    if (keys["w"]) ship.accelerate(0.1);
+    if (keys["s"]) ship.accelerate(-0.1);
 
     // Update and draw ship
     ship.update();

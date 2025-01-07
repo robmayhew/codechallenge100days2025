@@ -1,5 +1,5 @@
 const WIDTH = 800;
-const HEIGHT   = 600;
+const HEIGHT = 600;
 
 export class Asteroid {
     x: number;
@@ -7,21 +7,43 @@ export class Asteroid {
     radius: number;
     speedX: number;
     speedY: number;
+    points: number;
+    jaggedness: number;
 
-    constructor(x: number, y: number, radius: number, speedX: number, speedY: number) {
+    constructor(x: number, y: number, radius: number, speedX: number, speedY: number, points: number = 6) {
         this.x = x;
         this.y = y;
         this.radius = radius;
         this.speedX = speedX;
         this.speedY = speedY;
+        this.points = points;
+        this.jaggedness = Math.random() * 1;
     }
 
     draw(ctx: CanvasRenderingContext2D) {
+        const angleStep = (Math.PI * 2) / this.points;
+        let angle = 0;
+
         ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+
+        for (let i = 0; i < this.points; i++) {
+            // Maintain a fixed "jagged" offset
+            const offset = 1 + this.jaggedness * Math.sin(i); // Creating a fixed offset for each point
+            const xOffset = Math.cos(angle) * this.radius * offset;
+            const yOffset = Math.sin(angle) * this.radius * offset;
+
+            if (i === 0) {
+                ctx.moveTo(this.x + xOffset, this.y + yOffset);
+            } else {
+                ctx.lineTo(this.x + xOffset, this.y + yOffset);
+            }
+
+            angle += angleStep;
+        }
+
+        ctx.closePath();
         ctx.fillStyle = "blue";
         ctx.fill();
-        ctx.closePath();
     }
 
     update() {
