@@ -17,7 +17,7 @@ export class Asteroid {
         this.speedX = speedX;
         this.speedY = speedY;
         this.points = points;
-        this.jaggedness = Math.random() * 1;
+        this.jaggedness = Math.random() * 10;
     }
 
     draw(ctx: CanvasRenderingContext2D) {
