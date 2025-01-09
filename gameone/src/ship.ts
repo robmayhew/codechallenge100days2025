@@ -95,12 +95,14 @@ export class Ship {
     delta: Vector2D;
     angle: number;
     speed: number;
+    thrust: number;
 
     constructor() {
         this.location = new Vector2D(WIDTH / 2, HEIGHT/2);
         this.delta = new Vector2D(0,0);
         this.angle = 0; // Radians
         this.speed = 0;
+        this.thrust = 0;
     }
 
     draw(ctx: CanvasRenderingContext2D) {
@@ -109,18 +111,31 @@ export class Ship {
         ctx.rotate(this.angle + (Math.PI/2));
         ctx.beginPath();
         ctx.moveTo(0, -10);
-        ctx.lineTo(5, 10);
-        ctx.lineTo(-5, 10);
+        ctx.lineTo(10, 15);
+        ctx.lineTo(-10, 15);
         ctx.closePath();
-        ctx.fillStyle = "white";
-        ctx.fill();
+        ctx.strokeStyle = "white";
+        ctx.stroke();
+
+        if(this.thrust > 0)
+        {
+            ctx.beginPath();
+            ctx.moveTo(0, 30);
+            ctx.lineTo(7, 15);
+            ctx.lineTo(-7, 15);
+            ctx.closePath();
+            ctx.strokeStyle = "white";
+            ctx.stroke();
+
+            this.thrust--;
+        }
         ctx.restore();
     }
 
     update() {
 
         this.location = this.location.add(this.delta);
-        this.delta = this.delta.multiply(0.50);
+        //this.delta = this.delta.multiply(0.50);
 
         // Wrap around screen edges
         if (this.location.x > WIDTH) this.location.x = 0;
@@ -136,6 +151,7 @@ export class Ship {
     }
 
     accelerate(amount: number) {
-        this.delta = this.delta.add(Vector2D.fromAngleAndMagnitude(this.angle, 1));
+        this.delta = this.delta.add(Vector2D.fromAngleAndMagnitude(this.angle, 0.01));
+        this.thrust = 10;
     }
 }

@@ -9,7 +9,6 @@ const ctx = canvas.getContext("2d")!;
 
 const WIDTH = canvas.width;
 const HEIGHT = canvas.height;
-
 function clearScreen() {
     ctx.fillStyle = "black";
     ctx.fillRect(0, 0, WIDTH, HEIGHT);
@@ -50,15 +49,15 @@ const ship = new Ship();
 const asteroids: Asteroid[] = [];
 
 // Create some random asteroids
-for (let i = 0; i < 5; i++) {
-    asteroids.push(new Asteroid(
-        Math.random() * WIDTH,
-        Math.random() * HEIGHT,
-        20 + Math.random() * 30,
-        Math.random() * 2 - 1,
-        Math.random() * 2 - 1
-    ));
-}
+// for (let i = 0; i < 5; i++) {
+//     asteroids.push(new Asteroid(
+//         Math.random() * WIDTH,
+//         Math.random() * HEIGHT,
+//         20 + Math.random() * 30,
+//         Math.random() * 2 - 1,
+//         Math.random() * 2 - 1
+//     ));
+// }
 
 
 // Start the game loop
