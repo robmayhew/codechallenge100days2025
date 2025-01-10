@@ -22,6 +22,7 @@ function gameLoop() {
     if (keys["d"]) ship.rotate(0.05);
     if (keys["w"]) ship.accelerate(0.1);
     if (keys["s"]) ship.accelerate(-0.1);
+    if( keys[" "]) ship.fire();
 
     // Update and draw ship
     ship.update();
@@ -30,6 +31,10 @@ function gameLoop() {
     // Update and draw asteroids
     asteroids.forEach((asteroid) => {
         asteroid.update();
+        if(asteroid.collides(ship))
+        {
+          // next up collision detection!
+        }
         asteroid.draw(ctx);
     });
 
@@ -49,15 +54,15 @@ const ship = new Ship();
 const asteroids: Asteroid[] = [];
 
 // Create some random asteroids
-// for (let i = 0; i < 5; i++) {
-//     asteroids.push(new Asteroid(
-//         Math.random() * WIDTH,
-//         Math.random() * HEIGHT,
-//         20 + Math.random() * 30,
-//         Math.random() * 2 - 1,
-//         Math.random() * 2 - 1
-//     ));
-// }
+for (let i = 0; i < 5; i++) {
+    asteroids.push(new Asteroid(
+        Math.random() * WIDTH,
+        Math.random() * HEIGHT,
+        20 + Math.random() * 30,
+        Math.random() * 2 - 1,
+        Math.random() * 2 - 1
+    ));
+}
 
 
 // Start the game loop
