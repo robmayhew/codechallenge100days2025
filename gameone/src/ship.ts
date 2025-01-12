@@ -1,3 +1,4 @@
+import {Vector,Point, Sprite} from "./sprite.js";
 
 const WIDTH = 800;
 const HEIGHT   = 600;
@@ -98,38 +99,29 @@ export class Bullet {
         ctx.fill();
     }
 }
+const spritePoints: Point[] = [
+    { x: 0, y: 5 },
+    { x: 5, y: -5 },
+    { x: -5, y: -5 }
+];
 
-export class Ship {
-    location: Vector2D;
-    delta: Vector2D;
-    angle: number;
-    speed: number;
-    thrust: number;
-    bullets: Bullet[]; // Array to store bullets
+export class Ship extends Sprite{
+
+
 
     constructor() {
-        this.location = new Vector2D(WIDTH / 2, HEIGHT / 2);
-        this.delta = new Vector2D(0, 0);
-        this.angle = 0; // Radians
-        this.speed = 0;
-        this.thrust = 0;
-        this.bullets = []; // Initialize bullets array
+        super(spritePoints)
+        this.location = {x:(WIDTH / 2), y:HEIGHT / 2};
+
+        //this.angle = 0; // Radians
+        // this.speed = 0;
+        // this.thrust = 0;
+        // this.bullets = []; // Initialize bullets array
     }
-
-    draw(ctx: CanvasRenderingContext2D) {
-        // Draw ship
-        ctx.save();
-        ctx.translate(this.location.x, this.location.y);
-        ctx.rotate(this.angle + Math.PI / 2);
-        ctx.beginPath();
-        ctx.moveTo(0, -10);
-        ctx.lineTo(10, 15);
-        ctx.lineTo(-10, 15);
-        ctx.closePath();
-        ctx.strokeStyle = "white";
-        ctx.stroke();
-
-        if (this.thrust > 0) {
+    render(ctx: CanvasRenderingContext2D) {
+        super.render(ctx);
+        /*
+         if (this.thrust > 0) {
             ctx.beginPath();
             ctx.moveTo(0, 30);
             ctx.lineTo(7, 15);
@@ -139,49 +131,46 @@ export class Ship {
             ctx.stroke();
 
             this.thrust--;
-        }
-        ctx.restore();
 
-        // Draw bullets
-        this.bullets.forEach((bullet) => bullet.draw(ctx));
+         */
     }
 
-    update() {
+
+
+    tick() {
+        super.tick();
         // Update ship position
-        this.location = this.location.add(this.delta);
+        //this.location = this.location.add(this.delta);
 
         // Wrap around screen edges
-        if (this.location.x > WIDTH) this.location.x = 0;
-        if (this.location.x < 0) this.location.x = WIDTH;
-        if (this.location.y > HEIGHT) this.location.y = 0;
-        if (this.location.y < 0) this.location.y = HEIGHT;
+
 
         // Update bullets
-        this.bullets.forEach((bullet) => bullet.update());
+      //  this.bullets.forEach((bullet) => bullet.update());
 
         // Remove bullets that are off-screen (optional if wrap-around isn't desired)
-        this.bullets = this.bullets.filter((bullet) =>
-            bullet.location.x >= 0 && bullet.location.x <= WIDTH &&
-            bullet.location.y >= 0 && bullet.location.y <= HEIGHT
-        );
+        // this.bullets = this.bullets.filter((bullet) =>
+        //     bullet.location.x >= 0 && bullet.location.x <= WIDTH &&
+        //     bullet.location.y >= 0 && bullet.location.y <= HEIGHT
+        // );
     }
 
-    rotate(direction: number) {
-        this.angle += direction;
-    }
+    // rotate(direction: number) {
+    //     this.angle += direction;
+    // }
 
-    accelerate(amount: number) {
-        this.delta = this.delta.add(Vector2D.fromAngleAndMagnitude(this.angle, 0.01));
-        this.thrust = 10;
-    }
-
-    fire() {
-        // Create a new bullet at the ship's location, with the ship's angle
-        const bulletSpeed = 5; // Speed of the bullet
-        const bulletStartLocation = this.location.add(
-            Vector2D.fromAngleAndMagnitude(this.angle, 15)
-        ); // Start slightly in front of the ship
-        const bullet = new Bullet(bulletStartLocation, this.angle, bulletSpeed);
-        this.bullets.push(bullet);
-    }
+    // accelerate(amount: number) {
+    //     this.delta = this.delta.add(Vector2D.fromAngleAndMagnitude(this.angle, 0.01));
+    //     this.thrust = 10;
+    // }
+    //
+    // fire() {
+    //     // // Create a new bullet at the ship's location, with the ship's angle
+    //     // const bulletSpeed = 5; // Speed of the bullet
+    //     // const bulletStartLocation = this.location.add(
+    //     //     Vector2D.fromAngleAndMagnitude(this.angle, 15)
+    //     // ); // Start slightly in front of the ship
+    //     // const bullet = new Bullet(bulletStartLocation, this.angle, bulletSpeed);
+    //     // this.bullets.push(bullet);
+    // }
 }
