@@ -2,7 +2,7 @@
 
 import { Ship } from "./ship.js";
 import {Asteroid} from "./asteriod.js";
-import {Point, Sprite} from "./sprite.js";
+import {Point, Sprite, Vector2D} from "./sprite.js";
 
 const canvas = document.getElementById("gameCanvas") as HTMLCanvasElement;
 const ctx = canvas.getContext("2d")!;
@@ -21,7 +21,10 @@ function gameLoop() {
     // Ship controls
     if (keys["a"]) ship.angle += -0.05;
     if (keys["d"]) ship.angle += 0.05;
-    //if (keys["w"]) ship.accelerate(0.1);
+    if (keys["w"]){
+        const v = Vector2D.fromAngleAndMagnitude(ship.angle,0.2)
+        ship.delta = ship.delta.add(v);
+    }
     //if (keys["s"]) ship.accelerate(-0.1);
 //    if( keys[" "]) ship.fire();
 
@@ -38,8 +41,7 @@ function gameLoop() {
         }
         asteroid.draw(ctx);
     });
-    mySprite.tick();
-    mySprite.render(ctx);
+
     requestAnimationFrame(gameLoop);
 }
 const keys: { [key: string]: boolean } = {};
@@ -54,16 +56,6 @@ window.addEventListener("keyup", (e) => {
 
 const ship = new Ship();
 const asteroids: Asteroid[] = [];
-const spritePoints: Point[] = [
-    { x: 1, y: 4 },
-    { x: 2, y: 2 },
-    { x: 5, y: -2 },
-    { x: -5, y: -2 },
-    { x: -2, y: 2 },
-    { x: -1, y: 4 },
-];
-
-const mySprite = new Sprite(spritePoints, { x: 50, y: 50 }, Math.PI/4, { dx: 0, dy: 0 });
 
 
 

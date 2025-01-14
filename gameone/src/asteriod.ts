@@ -1,4 +1,5 @@
-import {Ship, Vector2D} from "./ship";
+import {Ship} from "./ship.js";
+import {Vector2D} from "./sprite.js";
 
 const WIDTH = 800;
 const HEIGHT = 600;
