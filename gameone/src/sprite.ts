@@ -77,7 +77,7 @@ export class Sprite {
     public location: Point; // Current position on the graph
     public angle: number; // Current angle the sprite is pointing at
     public delta: Vector2D; // Speed and direction
-
+    public color: string;
     constructor(points: Point[],
                 location: Point = { x: 0, y: 0 },
                 angle: number = 0,
@@ -86,13 +86,14 @@ export class Sprite {
         this.location = location;
         this.angle = angle;
         this.delta = delta;
+        this.color = 'white';
     }
 
     render(ctx: CanvasRenderingContext2D) {
         ctx.save();
         ctx.translate(this.location.x, this.location.y);
         ctx.rotate(this.angle);
-        ctx.strokeStyle = "white";
+        ctx.strokeStyle = this.color;
         ctx.beginPath();
         this.points.forEach((point, index) => {
             const x = point.x;
@@ -122,23 +123,26 @@ export class Sprite {
 
     }
 
-    getCollisionBox(): { x: number; y: number; width: number; height: number } {
-        const rotatedPoints = this.points.map(point => {
-            const rotatedX = point.x * Math.cos(this.angle) - point.y * Math.sin(this.angle);
-            const rotatedY = point.x * Math.sin(this.angle) + point.y * Math.cos(this.angle);
-            return { x: rotatedX, y: rotatedY };
+    collides(sprite: Sprite) {
+        let radius1 = 0;
+        this.points.forEach((p) => {
+            const r = Math.sqrt(p.x * p.x + p.y * p.y);
+            if (r > radius1) radius1 = r;
         });
 
-        const minX = Math.min(...rotatedPoints.map(p => p.x)) + this.location.x;
-        const maxX = Math.max(...rotatedPoints.map(p => p.x)) + this.location.x;
-        const minY = Math.min(...rotatedPoints.map(p => p.y)) + this.location.y;
-        const maxY = Math.max(...rotatedPoints.map(p => p.y)) + this.location.y;
+        // Calculate other sprite's bounding radius
+        let radius2 = 0;
+        sprite.points.forEach((p) => {
+            const r = Math.sqrt(p.x * p.x + p.y * p.y);
+            if (r > radius2) radius2 = r;
+        });
 
-        return {
-            x: minX,
-            y: minY,
-            width: maxX - minX,
-            height: maxY - minY
-        };
+        // Calculate the distance between the centers
+        const dx = this.location.x - sprite.location.x;
+        const dy = this.location.y - sprite.location.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+
+        // Return true if the distance is less than the sum of the radii
+        return distance < radius1 + radius2;
     }
 }

@@ -35,10 +35,12 @@ function gameLoop() {
     // Update and draw asteroids
     asteroids.forEach((asteroid) => {
         asteroid.tick();
-        // if(asteroid.collides(ship))
-        // {
-        //   // next up collision detection!
-        // }
+        if(asteroid.collides(ship))
+        {
+            asteroid.color = 'red'
+        }else{
+            asteroid.color = 'white';
+        }
         asteroid.render(ctx);
     });
 
@@ -56,21 +58,9 @@ window.addEventListener("keyup", (e) => {
 
 const ship = new Ship();
 const asteroids: Asteroid[] = [];
-/*
 
-    asteroids.push(new Asteroid(
-        Math.random() * WIDTH,
-        Math.random() * HEIGHT,
-        20 + Math.random() * 30,
-        Math.random() * 2 - 1,
-        Math.random() * 2 - 1
-    ));
-  private points: Point[]; // Outline points relative to the center (0,0)
-    public location: Point; // Current position on the graph
-    public angle: number; // Current angle the sprite is pointing at
-    public delta: Vector2D; // Sp
- */
-console.log("Building Asteroids");
+
+
 // Create some random asteroids
 for (let i = 0; i < 5; i++) {
     const points:Point[] = [];
