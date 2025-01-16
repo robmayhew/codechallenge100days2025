@@ -34,12 +34,12 @@ function gameLoop() {
 
     // Update and draw asteroids
     asteroids.forEach((asteroid) => {
-        asteroid.update();
-        if(asteroid.collides(ship))
-        {
-          // next up collision detection!
-        }
-        asteroid.draw(ctx);
+        asteroid.tick();
+        // if(asteroid.collides(ship))
+        // {
+        //   // next up collision detection!
+        // }
+        asteroid.render(ctx);
     });
 
     requestAnimationFrame(gameLoop);
@@ -56,13 +56,8 @@ window.addEventListener("keyup", (e) => {
 
 const ship = new Ship();
 const asteroids: Asteroid[] = [];
+/*
 
-
-
-
-
-// Create some random asteroids
-for (let i = 0; i < 5; i++) {
     asteroids.push(new Asteroid(
         Math.random() * WIDTH,
         Math.random() * HEIGHT,
@@ -70,8 +65,30 @@ for (let i = 0; i < 5; i++) {
         Math.random() * 2 - 1,
         Math.random() * 2 - 1
     ));
+  private points: Point[]; // Outline points relative to the center (0,0)
+    public location: Point; // Current position on the graph
+    public angle: number; // Current angle the sprite is pointing at
+    public delta: Vector2D; // Sp
+ */
+console.log("Building Asteroids");
+// Create some random asteroids
+for (let i = 0; i < 5; i++) {
+    const points:Point[] = [];
+    for(let i = 0; i < 10; i++)
+    {
+        let angle = (Math.PI * 2) / 10 * i;
+        let magnitude = Math.random() * 25 + 5;
+        const x = magnitude * Math.cos(angle);
+        const y = magnitude * Math.sin(angle);
+        points.push({x,y});
+    }
+    const  p =  {x:Math.random() * WIDTH,y:
+        Math.random() * HEIGHT}
+    const a = new Asteroid(points,p);
+    a.angle = Math.random() * (Math.PI * 2);
+    a.delta = Vector2D.fromAngleAndMagnitude(a.angle, 0.1);
+    asteroids.push(a);
 }
-
 
 // Start the game loop
 gameLoop();

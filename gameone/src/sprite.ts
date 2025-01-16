@@ -92,7 +92,7 @@ export class Sprite {
         ctx.save();
         ctx.translate(this.location.x, this.location.y);
         ctx.rotate(this.angle);
-
+        ctx.strokeStyle = "white";
         ctx.beginPath();
         this.points.forEach((point, index) => {
             const x = point.x;
