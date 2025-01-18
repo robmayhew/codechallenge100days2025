@@ -3,6 +3,7 @@
 import { Ship } from "./ship.js";
 import {Asteroid} from "./asteriod.js";
 import {Point, Sprite, Vector2D} from "./sprite.js";
+import {Bullet} from "./bullet.js";
 
 const canvas = document.getElementById("gameCanvas") as HTMLCanvasElement;
 const ctx = canvas.getContext("2d")!;
@@ -26,16 +27,24 @@ function gameLoop() {
         ship.delta = ship.delta.add(v);
     }
     //if (keys["s"]) ship.accelerate(-0.1);
-//    if( keys[" "]) ship.fire();
+    if( keys[" "])
+    {
+        bullet.location = {x:ship.location.x,y:ship.location.y};
+        bullet.angle = ship.angle;
+        bullet.delta = Vector2D.fromAngleAndMagnitude(bullet.angle,10);
+        bullet.reset();
+    }
 
     // Update and draw ship
     ship.tick();
     ship.render(ctx);
 
+    bullet.render(ctx);
+    bullet.tick();
     // Update and draw asteroids
     asteroids.forEach((asteroid) => {
         asteroid.tick();
-        if(asteroid.collides(ship))
+        if(asteroid.collides(ship) || asteroid.collides(bullet))
         {
             asteroid.color = 'red'
         }else{
@@ -59,6 +68,10 @@ window.addEventListener("keyup", (e) => {
 const ship = new Ship();
 const asteroids: Asteroid[] = [];
 
+const bullet = new Bullet([{x:1,y:0},
+    {x:0,y:1},
+    {x:0,y:-1},
+    {x:-1,y:-1}]);
 
 
 // Create some random asteroids
