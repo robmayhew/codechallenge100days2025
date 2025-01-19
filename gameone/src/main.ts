@@ -17,13 +17,21 @@ function clearScreen() {
 }
 
 let score = 0;
-
+let gameOver = false;
 function gameLoop() {
     clearScreen();
 
     // Ship controls
     if (keys["a"]) ship.angle += -0.05;
     if (keys["d"]) ship.angle += 0.05;
+    if(keys["r"])
+    {
+        gameOver = false;
+        score = 0;
+        asteroids.forEach((asteroid) => {
+           asteroid.reset(score);
+        });
+    }
     if (keys["w"]){
         const v = Vector2D.fromAngleAndMagnitude(ship.angle,0.2)
         ship.delta = ship.delta.add(v);
@@ -37,34 +45,45 @@ function gameLoop() {
         bullet.reset();
     }
 
-    // Update and draw ship
-    ship.tick();
-    ship.render(ctx);
-
-    bullet.render(ctx);
-    bullet.tick();
-    // Update and draw asteroids
-    asteroids.forEach((asteroid) => {
-        asteroid.tick();
-        if(asteroid.collides(ship) || asteroid.collides(bullet))
-        {
-            asteroid.color = 'red'
-            if(asteroid.collides(bullet))
-            {
-                score++;
-                bullet.reset();
-                asteroid.reset(score);
-
-            }
-        }else{
-            asteroid.color = 'white';
-        }
-        asteroid.render(ctx);
-    });
     ctx.strokeStyle = "white";
     ctx.font = "48px Arial";
     ctx.strokeText("Score: "+ score, 20,30);
+    if(gameOver)
+    {
+        ctx.strokeText("GAME OVER", WIDTH/2 - 100,HEIGHT/2);
+        ctx.strokeText("Press R to restart", WIDTH/2 - 100,HEIGHT/2+40);
+    }else{
+        // Update and draw ship
+        ship.tick();
+        ship.render(ctx);
 
+        bullet.render(ctx);
+        bullet.tick();
+        // Update and draw asteroids
+        asteroids.forEach((asteroid) => {
+            asteroid.tick();
+            if(asteroid.collides(ship) || asteroid.collides(bullet))
+            {
+                asteroid.color = 'red'
+                if(asteroid.collides(bullet))
+                {
+                    score++;
+                    bullet.reset();
+                    asteroid.reset(score);
+                }
+                if(asteroid.collides(ship))
+                {
+                    gameOver = true;
+                }
+            }else{
+                asteroid.color = 'white';
+            }
+            asteroid.render(ctx);
+        });
+        ctx.strokeStyle = "white";
+        ctx.font = "48px Arial";
+        ctx.strokeText("Score: "+ score, 20,30);
+    }
     requestAnimationFrame(gameLoop);
 }
 const keys: { [key: string]: boolean } = {};
