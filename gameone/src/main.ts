@@ -16,6 +16,8 @@ function clearScreen() {
     ctx.fillRect(0, 0, WIDTH, HEIGHT);
 }
 
+let score = 0;
+
 function gameLoop() {
     clearScreen();
 
@@ -47,11 +49,21 @@ function gameLoop() {
         if(asteroid.collides(ship) || asteroid.collides(bullet))
         {
             asteroid.color = 'red'
+            if(asteroid.collides(bullet))
+            {
+                score++;
+                bullet.reset();
+                asteroid.reset(score);
+
+            }
         }else{
             asteroid.color = 'white';
         }
         asteroid.render(ctx);
     });
+    ctx.strokeStyle = "white";
+    ctx.font = "48px Arial";
+    ctx.strokeText("Score: "+ score, 20,30);
 
     requestAnimationFrame(gameLoop);
 }
@@ -68,28 +80,17 @@ window.addEventListener("keyup", (e) => {
 const ship = new Ship();
 const asteroids: Asteroid[] = [];
 
-const bullet = new Bullet([{x:1,y:0},
-    {x:0,y:1},
-    {x:0,y:-1},
-    {x:-1,y:-1}]);
+const bullet = new Bullet([{x:3,y:0},
+    {x:0,y:3},
+    {x:0,y:-3},
+    {x:-3,y:-3}]);
 
 
 // Create some random asteroids
 for (let i = 0; i < 5; i++) {
-    const points:Point[] = [];
-    for(let i = 0; i < 10; i++)
-    {
-        let angle = (Math.PI * 2) / 10 * i;
-        let magnitude = Math.random() * 25 + 5;
-        const x = magnitude * Math.cos(angle);
-        const y = magnitude * Math.sin(angle);
-        points.push({x,y});
-    }
-    const  p =  {x:Math.random() * WIDTH,y:
-        Math.random() * HEIGHT}
-    const a = new Asteroid(points,p);
-    a.angle = Math.random() * (Math.PI * 2);
-    a.delta = Vector2D.fromAngleAndMagnitude(a.angle, 0.1);
+
+    const a = new Asteroid();
+    a.reset(score);
     asteroids.push(a);
 }
 

@@ -14,7 +14,7 @@ export class Bullet extends Sprite
 
     reset()
     {
-        this.timeToLive = 100;
+        this.timeToLive = 50;
     }
 
 

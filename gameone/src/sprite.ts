@@ -73,12 +73,12 @@ const WIDTH = 800;
 const HEIGHT   = 600;
 
 export class Sprite {
-    private points: Point[]; // Outline points relative to the center (0,0)
+    public points: Point[]; // Outline points relative to the center (0,0)
     public location: Point; // Current position on the graph
     public angle: number; // Current angle the sprite is pointing at
     public delta: Vector2D; // Speed and direction
     public color: string;
-    constructor(points: Point[],
+    constructor(points: Point[] = [],
                 location: Point = { x: 0, y: 0 },
                 angle: number = 0,
                 delta = new Vector2D(0,0)) {
