@@ -20,7 +20,7 @@ export class Asteroid extends Sprite {
         this.location =  {x:Math.random() * WIDTH,y:
                 Math.random() * HEIGHT}
         this.angle = Math.random() * (Math.PI * 2);
-        this.delta = Vector2D.fromAngleAndMagnitude(this.angle, 0.1*score);
+        this.delta = Vector2D.fromAngleAndMagnitude(this.angle, 0.1*score+0.01);
     }
 
 }

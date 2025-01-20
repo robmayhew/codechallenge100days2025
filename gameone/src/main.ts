@@ -80,6 +80,18 @@ function gameLoop() {
             }
             asteroid.render(ctx);
         });
+        for (let i = 0; i < asteroids.length; i++) {
+            for (let j = i + 1; j < asteroids.length; j++) {
+                const aa = asteroids[i];
+                const bb = asteroids[j];
+                if(aa.collides(bb))
+                {
+                    aa.angle = Math.random() * Math.PI;
+                    aa.delta = Vector2D.fromAngleAndMagnitude(aa.angle, 0.1*score+0.01);
+                }
+            }
+        }
+
         ctx.strokeStyle = "white";
         ctx.font = "48px Arial";
         ctx.strokeText("Score: "+ score, 20,30);
